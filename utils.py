@@ -100,44 +100,53 @@ def create_maps(
 
     return sigma_map, mu_map 
 
-def create_receivers(rx_x, rx_z, components=["x", "z"]):
+def create_receivers(rx_x, rx_z, components=["x", "z"], parts=["real", "imag"]):
     rx_list = []
     if "x" in components: 
-        rx_ex_re = fdem.receivers.PointElectricField(
-            locations=utils.ndgrid(rx_x, np.r_[0], rx_z),
-            orientation="x",
-            component="real",
-        )
-        rx_ex_im = fdem.receivers.PointElectricField(
-            locations=utils.ndgrid(rx_x, np.r_[0], rx_z),
-            orientation="x",
-            component="imag",
-        )
-        rx_list = np.r_[rx_list, rx_ex_re, rx_ex_im]
+        if "real" in parts: 
+            rx_ex_re = fdem.receivers.PointElectricField(
+                locations=utils.ndgrid(rx_x, np.r_[0], rx_z),
+                orientation="x",
+                component="real",
+            )
+            rx_list = np.r_[rx_list, rx_ex_re]
+        if "imag" in parts:
+            rx_ex_im = fdem.receivers.PointElectricField(
+                locations=utils.ndgrid(rx_x, np.r_[0], rx_z),
+                orientation="x",
+                component="imag",
+            )
+            rx_list = np.r_[rx_list, rx_ex_im]
     if "y" in components: 
-        rx_hy_re = fdem.receivers.PointMagneticField(
-            locations=utils.ndgrid(rx_x, np.r_[0], rx_z),
-            orientation="y",
-            component="real",
-        )
-        rx_hy_im = fdem.receivers.PointMagneticField(
-            locations=utils.ndgrid(rx_x, np.r_[0], rx_z),
-            orientation="y",
-            component="imag",
-        )
-        rx_list = np.r_[rx_list, rx_hy_re, rx_hy_im]
+        if "real" in parts: 
+            rx_hy_re = fdem.receivers.PointMagneticField(
+                locations=utils.ndgrid(rx_x, np.r_[0], rx_z),
+                orientation="y",
+                component="real",
+            )
+            rx_list = np.r_[rx_list, rx_hy_re]
+        if "imag" in parts: 
+            rx_hy_im = fdem.receivers.PointMagneticField(
+                locations=utils.ndgrid(rx_x, np.r_[0], rx_z),
+                orientation="y",
+                component="imag",
+            )
+            rx_list = np.r_[rx_list, rx_hy_im]
     if "z" in components: 
-        rx_ez_re = fdem.receivers.PointElectricField(
-            locations=utils.ndgrid(rx_x, np.r_[0], rx_z),
-            orientation="z",
-            component="real",
-        )
-        rx_ez_im = fdem.receivers.PointElectricField(
-            locations=utils.ndgrid(rx_x, np.r_[0], rx_z),
-            orientation="z",
-            component="imag",
-        )
-        rx_list = np.r_[rx_list, rx_ez_re, rx_ez_im]
+        if "real" in parts: 
+            rx_ez_re = fdem.receivers.PointElectricField(
+                locations=utils.ndgrid(rx_x, np.r_[0], rx_z),
+                orientation="z",
+                component="real",
+            )
+            rx_list = np.r_[rx_list, rx_ez_re]
+        if "imag" in parts: 
+            rx_ez_im = fdem.receivers.PointElectricField(
+                locations=utils.ndgrid(rx_x, np.r_[0], rx_z),
+                orientation="z",
+                component="imag",
+            )
+            rx_list = np.r_[rx_list, rx_ez_im]
     return list(rx_list)
 
 class SaveInversionProgress(directives.InversionDirective):
